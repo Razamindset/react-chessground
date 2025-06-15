@@ -1,0 +1,49 @@
+:root {
+  --piece-set: "alpha";
+  --directory: pieces;
+}
+
+.piece-set-alpha {
+  --piece-set: "alpha";
+}
+
+.piece-set-xkcd {
+  --piece-set: "xkcd";
+}
+
+.cg-wrap piece.pawn.white {
+  background-image: url('./pieces/alpha/wP.svg');
+}
+.cg-wrap piece.bishop.white {
+  background-image: url("./pieces/alpha/wB.svg");
+}
+.cg-wrap piece.knight.white {
+  background-image: url("./pieces/alpha/wN.svg");
+}
+.cg-wrap piece.rook.white {
+  background-image: url("./pieces/alpha/wR.svg");
+}
+.cg-wrap piece.queen.white {
+  background-image: url("./pieces/alpha/wQ.svg");
+}
+.cg-wrap piece.king.white {
+  background-image: url("./pieces/alpha/wK.svg");
+}
+.cg-wrap piece.pawn.black {
+  background-image: url("./pieces/alpha/bP.svg");
+}
+.cg-wrap piece.bishop.black {
+  background-image: url("./pieces/alpha/bB.svg");
+}
+.cg-wrap piece.knight.black {
+  background-image: url("./pieces/alpha/bN.svg");
+}
+.cg-wrap piece.rook.black {
+  background-image: url("./pieces/alpha/bR.svg");
+}
+.cg-wrap piece.queen.black {
+  background-image: url("./pieces/alpha/bQ.svg");
+}
+.cg-wrap piece.king.black {
+  background-image: url("./pieces/alpha/bK.svg");
+}

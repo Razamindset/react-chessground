@@ -1,15 +1,15 @@
-import React from "react";
-import { FaChessKnight, FaChessQueen, FaChessRook } from "react-icons/fa";
-import { FaRegChessBishop } from "react-icons/fa6";
-
-const PromotionDialog = ({ isOpen, onClose, onPromote, color }) => {
+const PromotionDialog = ({ isOpen, onClose, onPromote, color, pieceSet }) => {
   if (!isOpen) return null;
+  const pieceColor = color === "w" ? "/w" : "/b";
 
   const pieces = [
-    { name: "q", icon: <FaChessQueen size={32} className="text-black" /> },
-    { name: "r", icon: <FaChessRook size={32} className="text-black" /> },
-    { name: "n", icon: <FaChessKnight size={32} className="text-black" /> },
-    { name: "b", icon: <FaRegChessBishop size={32} className="text-black" /> },
+    {
+      name: "q",
+      url: "./pieces/" + pieceSet + pieceColor + "Q.svg",
+    },
+    { name: "r", url: "./pieces/" + pieceSet + pieceColor + "R.svg" },
+    { name: "n", url: "./pieces/" + pieceSet + pieceColor + "N.svg" },
+    { name: "b", url: "./pieces/" + pieceSet + pieceColor + "B.svg" },
   ];
 
   return (
@@ -22,7 +22,7 @@ const PromotionDialog = ({ isOpen, onClose, onPromote, color }) => {
               className="w-16 h-16 rounded-full border flex items-center justify-center bg-white"
               onClick={() => onPromote(piece.name)}
             >
-              {piece.icon}
+              <img src={piece.url} className="h-11" alt="piece-image" />
             </button>
           ))}
         </div>

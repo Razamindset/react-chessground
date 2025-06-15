@@ -2,20 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { Chessground as NativeChessground } from "chessground";
 import "../assets/board/chess.css";
 import "../assets/board/board-bg.css";
+import "../assets/board/pieces.css";
 import PromotionDialog from "./PromotionDialog";
-
-// Import theme background images
-import brownThemeBg from "../assets/board/backgrounds/brown.svg";
-import greenThemeBg from "../assets/board/backgrounds/green.svg";
-import blueThemeBg from "../assets/board/backgrounds/blue.svg";
-import redThemeBg from "../assets/board/backgrounds/purple.svg"; // Note: your CSS has red pointing to purple.svg
-
-const board_themes = [
-  { name: "Brown", css_class: "theme-brown", preview: brownThemeBg },
-  { name: "Green", css_class: "theme-green", preview: greenThemeBg },
-  { name: "Blue", css_class: "theme-blue", preview: blueThemeBg },
-  { name: "Red", css_class: "theme-red", preview: redThemeBg },
-];
+import { pieceSets, board_themes } from "./utils";
 
 const Chessboard = ({
   initialFen,
@@ -28,10 +17,12 @@ const Chessboard = ({
   const chessgroundRef = useRef(null);
   const apiRef = useRef(null);
   const [theme, setTheme] = useState("theme-brown"); // Default to brown
+  const [pieceSet, setPieceSet] = useState("alpha"); // Default to Alpha
   const [promotionDialogOpen, setPromotionDialogOpen] = useState(false);
   const [pendingMove, setPendingMove] = useState(null);
   const containerRef = useRef(null);
   const [boardWidth, setBoardWidth] = useState(500);
+  const [hue, setHue] = useState(0);
 
   useEffect(() => {
     //! Initialize Chessground Configuration
@@ -173,15 +164,22 @@ const Chessboard = ({
     setTheme(selectedThemeClass);
   };
 
+  const handlePieceChange = (selectedPiece) => {
+    // setPieceSet(selectedPiece);
+  };
+
   return (
     <div
       className={`chessboard-container ${theme} flex items-center justify-center flex-col md:block`}
       ref={containerRef}
+      style={{
+        filter: hue? `hue-rotate(${hue}deg)`:undefined,
+      }}
     >
       <div
         ref={chessgroundRef}
         style={{ width: boardWidth, height: boardWidth }}
-        className="relative"
+        className={`realtive piece-set-${pieceSet}`}
       >
         <PromotionDialog
           isOpen={promotionDialogOpen}
@@ -191,14 +189,31 @@ const Chessboard = ({
           }}
           onPromote={handlePromotion}
           color={chess.turn()}
+          pieceSet={pieceSet}
         />
       </div>
+
+      <div className="hue-set w-full">
+        <input
+          type="range"
+          min={0}
+          max={100}
+          step={1}
+          onChange={(e) => setHue(e.target.value)}
+          value={hue}
+          className="w-full max-w-[500px]"
+
+        ></input>
+      </div>
+
       <div className="theme-selection-menu mt-4 flex justify-center gap-4 flex-wrap">
         {board_themes.map((boardTheme) => (
           <div
             key={boardTheme.css_class}
             className={`theme-option p-2 border rounded-md cursor-pointer ${
-              theme === boardTheme.css_class ? "border-blue-500 ring-2 ring-blue-500" : ""
+              theme === boardTheme.css_class
+                ? "border-blue-500 ring-2 ring-blue-500"
+                : ""
             }`}
             onClick={() => handleThemeChange(boardTheme.css_class)}
           >
@@ -211,7 +226,14 @@ const Chessboard = ({
           </div>
         ))}
       </div>
-      
+
+      <div className="piece_sets flex gap-3 flex-wrap">
+        {pieceSets.map((pieceSet) => (
+          <button onClick={() => handlePieceChange(pieceSet)}>
+            {pieceSet}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
