@@ -87,6 +87,16 @@ const Chessboard = ({
     };
   }, []);
 
+  useEffect(() => {
+    const pieceStyle = window.localStorage.getItem("pieces");
+console.log(pieceStyle);
+
+    if (pieceStyle) {
+      setPieceSet(pieceStyle);
+      handlePieceChange(pieceStyle);
+    }
+  }, []);
+
   const handleSelected = (key) => {
     const dests = new Map();
     const moves = chess.moves({ square: key, verbose: true });
@@ -164,6 +174,8 @@ const Chessboard = ({
 
   const handlePieceChange = (selectedPiece) => {
     setPieceSet(selectedPiece);
+    window.localStorage.setItem("pieces", selectedPiece);
+
     const whitePawns = document.querySelectorAll(".white.pawn");
     if (whitePawns.length > 0) {
       whitePawns.forEach((pawn) => {
@@ -269,8 +281,8 @@ const Chessboard = ({
     >
       <div
         ref={chessgroundRef}
-        style={{ width: boardWidth, height: boardWidth }}
-        className={`realtive`}
+        style={{ width: boardWidth, height: boardWidth, position: "relative" }}
+        // className={`realtive piece-set-${pieceSet}`}
       >
         <PromotionDialog
           isOpen={promotionDialogOpen}
@@ -278,7 +290,10 @@ const Chessboard = ({
             setPromotionDialogOpen(false);
             resetChessboardState();
           }}
-          onPromote={handlePromotion}
+          onPromote={() => {
+            handlePromotion();
+            handlePieceChange(pieceSet);
+          }}
           color={chess.turn()}
           pieceSet={pieceSet}
         />

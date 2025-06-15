@@ -2,16 +2,16 @@
   --piece-set: "alpha";
 }
 
-/* .piece-set-alpha {
+.piece-set-alpha {
   --piece-set: "alpha";
 }
 
 .piece-set-xkcd {
   --piece-set: "xkcd";
-} */
+}
 
 .cg-wrap piece.pawn.white {
-  background-image: url('./pieces/alpha/wP.svg');
+  background-image: url("./pieces/alpha/wP.svg");
 }
 .cg-wrap piece.bishop.white {
   background-image: url("./pieces/alpha/wB.svg");
