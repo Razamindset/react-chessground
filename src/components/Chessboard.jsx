@@ -91,8 +91,9 @@ const Chessboard = ({
     const pieceStyle = window.localStorage.getItem("pieces");
 
     if (pieceStyle) {
-      setPieceSet(pieceStyle);
       handlePieceChange(pieceStyle);
+    } else {
+      handlePieceChange("alpha");
     }
 
     const boardTheme = window.localStorage.getItem("board-theme");
