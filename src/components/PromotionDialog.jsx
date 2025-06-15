@@ -13,7 +13,7 @@ const PromotionDialog = ({ isOpen, onClose, onPromote, color }) => {
   ];
 
   return (
-    <div className="fixed inset-0 bg-slate-900/50 bg-opacity-50 flex items-center justify-center z-50">
+    <div className="absolute inset-0 bg-slate-900/50 bg-opacity-50 flex items-center justify-center z-50">
       <div className="p-4 bg-gray-200 rounded-lg flex items-center justify-center flex-col">
         <div className="flex space-x-4">
           {pieces.map((piece) => (
