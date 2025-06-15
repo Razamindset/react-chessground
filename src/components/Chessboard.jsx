@@ -89,11 +89,15 @@ const Chessboard = ({
 
   useEffect(() => {
     const pieceStyle = window.localStorage.getItem("pieces");
-console.log(pieceStyle);
 
     if (pieceStyle) {
       setPieceSet(pieceStyle);
       handlePieceChange(pieceStyle);
+    }
+
+    const boardTheme = window.localStorage.getItem("board-theme");
+    if (boardTheme) {
+      setTheme(boardTheme);
     }
   }, []);
 
@@ -169,6 +173,7 @@ console.log(pieceStyle);
   };
 
   const handleThemeChange = (selectedThemeClass) => {
+    window.localStorage.setItem("board-theme", selectedThemeClass);
     setTheme(selectedThemeClass);
   };
 
