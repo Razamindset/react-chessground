@@ -19,7 +19,7 @@ const PromotionDialog = ({ isOpen, onClose, onPromote, color, pieceSet }) => {
           {pieces.map((piece) => (
             <button
               key={piece.name}
-              className="w-16 h-16 rounded-full border flex items-center justify-center bg-white"
+              className={`w-16 h-16 rounded-full border flex items-center justify-center ${color === "w"? "bg-gray-400": "bg-white"}`}
               onClick={() => onPromote(piece.name)}
             >
               <img src={piece.url} className="h-11" alt="piece-image" />

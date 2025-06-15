@@ -1,15 +1,14 @@
 :root {
   --piece-set: "alpha";
-  --directory: pieces;
 }
 
-.piece-set-alpha {
+/* .piece-set-alpha {
   --piece-set: "alpha";
 }
 
 .piece-set-xkcd {
   --piece-set: "xkcd";
-}
+} */
 
 .cg-wrap piece.pawn.white {
   background-image: url('./pieces/alpha/wP.svg');

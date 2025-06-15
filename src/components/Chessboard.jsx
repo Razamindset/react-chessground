@@ -12,7 +12,6 @@ const Chessboard = ({
   onMove,
   chess,
   customArrows,
-  allowMoveOpponentPieces, // Added this prop as it was used in your snippet
 }) => {
   const chessgroundRef = useRef(null);
   const apiRef = useRef(null);
@@ -37,7 +36,6 @@ const Chessboard = ({
         },
         movable: {
           free: false,
-          color: !allowMoveOpponentPieces ? orientation : "both", // ensure allowMoveOpponentPieces is defined
           showDests: true,
         },
         highlight: {
@@ -61,7 +59,7 @@ const Chessboard = ({
         apiRef.current = null;
       }
     };
-  }, [initialFen, chess, orientation, allowMoveOpponentPieces]); // Added dependencies
+  }, [initialFen, chess, orientation]); // Added dependencies
 
   useEffect(() => {
     if (apiRef.current) {
@@ -165,21 +163,114 @@ const Chessboard = ({
   };
 
   const handlePieceChange = (selectedPiece) => {
-    // setPieceSet(selectedPiece);
+    setPieceSet(selectedPiece);
+    const whitePawns = document.querySelectorAll(".white.pawn");
+    if (whitePawns.length > 0) {
+      whitePawns.forEach((pawn) => {
+        const url = `./pieces/${selectedPiece}/wP.svg`;
+        pawn.style.backgroundImage = `url(${url})`;
+      });
+    }
+
+    const blackPawns = document.querySelectorAll(".black.pawn");
+    if (blackPawns.length > 0) {
+      blackPawns.forEach((pawn) => {
+        const url = `./pieces/${selectedPiece}/bP.svg`;
+        pawn.style.backgroundImage = `url(${url})`;
+      });
+    }
+
+    const whiteKnights = document.querySelectorAll(".white.knight");
+    if (whiteKnights.length > 0) {
+      whiteKnights.forEach((knight) => {
+        const url = `./pieces/${selectedPiece}/wN.svg`;
+        knight.style.backgroundImage = `url(${url})`;
+      });
+    }
+    const blackKnights = document.querySelectorAll(".black.knight");
+    if (blackKnights.length > 0) {
+      blackKnights.forEach((knight) => {
+        const url = `./pieces/${selectedPiece}/bN.svg`;
+        knight.style.backgroundImage = `url(${url})`;
+      });
+    }
+
+    const whiteRooks = document.querySelectorAll(".white.rook");
+    if (whiteRooks.length > 0) {
+      whiteRooks.forEach((rook) => {
+        const url = `./pieces/${selectedPiece}/wR.svg`;
+        rook.style.backgroundImage = `url(${url})`;
+      });
+    }
+
+    const blackRooks = document.querySelectorAll(".black.rook");
+    if (blackRooks.length > 0) {
+      blackRooks.forEach((piece) => {
+        const url = `./pieces/${selectedPiece}/bR.svg`;
+        piece.style.backgroundImage = `url(${url})`;
+      });
+    }
+
+    const whiteBishops = document.querySelectorAll(".white.bishop");
+    if (whiteBishops.length > 0) {
+      whiteBishops.forEach((piece) => {
+        const url = `./pieces/${selectedPiece}/wB.svg`;
+        piece.style.backgroundImage = `url(${url})`;
+      });
+    }
+    const blackBishops = document.querySelectorAll(".black.bishop");
+    if (blackBishops.length > 0) {
+      blackBishops.forEach((piece) => {
+        const url = `./pieces/${selectedPiece}/bB.svg`;
+        piece.style.backgroundImage = `url(${url})`;
+      });
+    }
+
+    // Queens
+    const whiteQueens = document.querySelectorAll(".white.queen");
+    if (whiteQueens.length > 0) {
+      whiteQueens.forEach((piece) => {
+        const url = `./pieces/${selectedPiece}/wQ.svg`;
+        piece.style.backgroundImage = `url(${url})`;
+      });
+    }
+    const blackQueens = document.querySelectorAll(".black.queen");
+    if (blackQueens.length > 0) {
+      blackQueens.forEach((piece) => {
+        const url = `./pieces/${selectedPiece}/bQ.svg`;
+        piece.style.backgroundImage = `url(${url})`;
+      });
+    }
+
+    // Kings
+    const whiteKing = document.querySelectorAll(".white.king");
+    if (whiteKing.length > 0) {
+      whiteKing.forEach((piece) => {
+        const url = `./pieces/${selectedPiece}/wK.svg`;
+        piece.style.backgroundImage = `url(${url})`;
+      });
+    }
+    const blackKing = document.querySelectorAll(".black.king");
+    if (blackKing.length > 0) {
+      blackKing.forEach((piece) => {
+        const url = `./pieces/${selectedPiece}/bK.svg`;
+        piece.style.backgroundImage = `url(${url})`;
+      });
+    }
   };
 
   return (
     <div
-      className={`chessboard-container ${theme} flex items-center justify-center flex-col md:block`}
+      className={`chessboard-container ${theme} grid grid-cols-2`}
       ref={containerRef}
       style={{
-        filter: hue? `hue-rotate(${hue}deg)`:undefined,
+        filter: hue > 0 ? `hue-rotate(${hue}deg)` : undefined,
       }}
     >
       <div
         ref={chessgroundRef}
         style={{ width: boardWidth, height: boardWidth }}
-        className={`realtive piece-set-${pieceSet}`}
+        className={`realtive`}
       >
         <PromotionDialog
           isOpen={promotionDialogOpen}
@@ -193,46 +284,47 @@ const Chessboard = ({
         />
       </div>
 
-      <div className="hue-set w-full">
-        <input
-          type="range"
-          min={0}
-          max={100}
-          step={1}
-          onChange={(e) => setHue(e.target.value)}
-          value={hue}
-          className="w-full max-w-[500px]"
+      <div className="board-controls">
+        <div className="hue-set w-full">
+          <input
+            type="range"
+            min={0}
+            max={100}
+            step={1}
+            onChange={(e) => setHue(e.target.value)}
+            value={hue}
+            className="w-full max-w-[500px]"
+          ></input>
+        </div>
 
-        ></input>
-      </div>
+        <div className="theme-selection-menu mt-4 flex justify-center gap-4 flex-wrap">
+          {board_themes.map((boardTheme) => (
+            <div
+              key={boardTheme.css_class}
+              className={`theme-option p-2 border rounded-md cursor-pointer ${
+                theme === boardTheme.css_class
+                  ? "border-blue-500 ring-2 ring-blue-500"
+                  : ""
+              }`}
+              onClick={() => handleThemeChange(boardTheme.css_class)}
+            >
+              <img
+                src={boardTheme.preview}
+                alt={`${boardTheme.name} theme preview`}
+                className="w-16 h-16 object-cover rounded-md"
+              />
+              <p className="text-center text-sm mt-1">{boardTheme.name}</p>
+            </div>
+          ))}
+        </div>
 
-      <div className="theme-selection-menu mt-4 flex justify-center gap-4 flex-wrap">
-        {board_themes.map((boardTheme) => (
-          <div
-            key={boardTheme.css_class}
-            className={`theme-option p-2 border rounded-md cursor-pointer ${
-              theme === boardTheme.css_class
-                ? "border-blue-500 ring-2 ring-blue-500"
-                : ""
-            }`}
-            onClick={() => handleThemeChange(boardTheme.css_class)}
-          >
-            <img
-              src={boardTheme.preview}
-              alt={`${boardTheme.name} theme preview`}
-              className="w-16 h-16 object-cover rounded-md"
-            />
-            <p className="text-center text-sm mt-1">{boardTheme.name}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="piece_sets flex gap-3 flex-wrap">
-        {pieceSets.map((pieceSet) => (
-          <button onClick={() => handlePieceChange(pieceSet)}>
-            {pieceSet}
-          </button>
-        ))}
+        <div className="piece_sets flex gap-3 flex-wrap">
+          {pieceSets.map((pieceSet) => (
+            <button onClick={() => handlePieceChange(pieceSet)} key={pieceSet}>
+              {pieceSet}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

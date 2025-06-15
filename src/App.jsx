@@ -1,7 +1,8 @@
-import { useState } from "react";
-import Chessboard from "./components/Chessboard";
+import { lazy, Suspense, useState } from "react";
+const Chessboard = lazy(() => import("./components/Chessboard"));
 import { Chess } from "chess.js";
 import useChessSounds from "./lib/useSound";
+import { FaSpinner } from "react-icons/fa";
 
 function App() {
   const [fen, setFen] = useState(
@@ -15,32 +16,36 @@ function App() {
     handleMoveSounds(move);
   };
 
-  const showCustommArrows = () => {
-    setCustomArrows([
-      {
-        orig: "a2",
-        dest: "a6",
-        brush: "blue",
-        modifiers: {
-          lineWidth: "10",
-        },
-      },
-    ]);
-  };
+  // const showCustommArrows = () => {
+  //   setCustomArrows([
+  //     {
+  //       orig: "a2",
+  //       dest: "a6",
+  //       brush: "blue",
+  //       modifiers: {
+  //         lineWidth: "10",
+  //       },
+  //     },
+  //   ]);
+  // };
 
   return (
-    <div className="App md:p-6">
-      <Chessboard
-        initialFen={fen}
-        chess={chess}
-        orientation="white"
-        onMove={handleMove}
-        allowMoveOpponentPieces={true}
-        customArrows={customArrows}
-      />
-      <button onClick={showCustommArrows} className="p-2 border rounded-md m-4">
-        Show Hints Arrows
-      </button>
+    <div className="App">
+      <Suspense
+        fallback={
+          <div className="h-screen">
+            <FaSpinner className="animate-spin" />
+          </div>
+        }
+      >
+        <Chessboard
+          initialFen={fen}
+          chess={chess}
+          orientation="white"
+          onMove={handleMove}
+          customArrows={customArrows}
+        />
+      </Suspense>
     </div>
   );
 }
